@@ -1,0 +1,79 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Cosmetics{% endblock title %} 
+{% block main-content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-sm-3">
+      <h5>Filters:-</h5>
+      <hr />
+      <div class="list-group">
+        <a
+          href="{% url 'cosmetics' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >All Cosmetics</a
+        >
+        <a
+          href="{% url 'cosmeticsdata' 'Loreal' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >Loreal</a
+        >
+        <a
+          href="{% url 'cosmeticsdata' 'Lakme' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >Lakme</a
+        >
+        <a
+          href="{% url 'cosmeticsdata' 'Biotique' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >Biotique</a
+        >
+        <a
+          href="{% url 'cosmeticsdata' 'below' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >Below 1000</a
+        >
+        <a
+          href="{% url 'cosmeticsdata' 'above' %}"
+          class="list-group-item list-group-item-action"
+          aria-current="true"
+          >Above 1000</a
+        >
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="row">
+        {% for product in cosmetics %}
+        <div class="col-sm-4 text-center mb-4">
+          <a href="{% url 'product-detail' product.id %}" class="btn">
+            <div class="item">
+              <img
+                src="{{product.product_image.url}}"
+                alt=""
+                height="250"
+                class=""
+              />
+              <div class="fw-bold">{{product.title}}</div>
+              <div class="fw-bold">
+                Rs. {{product.discounted_price}}
+                <small class="fw-light text-decoration-line-through"
+                  >{{product.selling_price}}</small
+                >
+                <small style="color: green" class="fw-dark"
+                  >{{product.get_discount_percent|floatformat:0}}% off</small
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

@@ -1,0 +1,55 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Get Help{% endblock title %} 
+{% block main-content %}
+<section class="log">
+  <div class="imgBx">
+    <img src="{% static 'app/images/login.png' %}" />
+  </div>
+  <div class="contentBx">
+    <div class="formBx">
+      <h2>Help Desk</h2>
+      <form
+        target="_blank"
+        action="mailto:care.andocs@gmail.com"
+        method="get"
+        enctype="text/plain"
+        class="signBx"
+      >
+        <div class="inputBx">
+          <div>
+            <label for="name"
+              >Name:
+              <input type="text" name="name" id="name" />
+            </label>
+          </div>
+          <br />
+          <div>
+            <label for="email"
+              >Email:
+              <input type="text" name="email" id="email" />
+            </label>
+          </div>
+          <br />
+          <div>
+            <label>Comments:</label>
+            <br />
+            <textarea
+              placeholder="Send your query to us."
+              name="comments"
+              rows="5"
+              cols="35"
+            ></textarea>
+          </div>
+          <br />
+          <div>
+            <input type="submit" name="submit" value="Send" />
+            <br />
+            <input type="reset" name="reset" value="Clear Form" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock main-content %}

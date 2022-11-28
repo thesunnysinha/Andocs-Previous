@@ -1,0 +1,121 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Checkout{% endblock title %} 
+{% block main-content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      {% if cartItems %}
+      <h4>Order Summary</h4>
+      {% for item in carts %}
+      <hr />
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5>Product: {{item.product.title}}</h5>
+          <p>Quantity: {{item.quantity}}</p>
+          <p class="fw-bold">Price: {{item.get_total}}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <hr />
+      <h5>Items: {{cartItems}}</h5>
+      <h5>Total cost + Rs. 70(Shipping) = {{totalamount}}</h5>
+      <hr />
+      <small>Term and Condition: Product once sold can't be returned.</small>
+    </div>
+    <div class="col-sm-4 offset-sm-1">
+      <a href="{% url 'cart' %}" class="btn btn-outline-dark"
+        >&#x2190; Back to Cart</a
+      >
+      <hr />
+      {% if add%}
+      <h4>Select Shipping Address</h4>
+      <hr />
+      <form action="/paymentdone/" id="myform">
+        {% for ad in add %}
+        <div class="card">
+          <div class="card-body">
+            <h5>{{ad.name}}</h5>
+            <p>{{ad.locality}},{{ad.city}},{{ad.state}}</p>
+            <p>{{ad.zipcode}}</p>
+            <p>{{ad.mobile_number}}</p>
+          </div>
+        </div>
+        <div class="form-check mt-2 mb-5">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="custid"
+            id="custadd{{forloop.counter}}"
+            value="{{ad.id}}"
+            required
+            checked
+          />
+          <label
+            class="form-check-label fw-bold"
+            for="custadd{{forloop.counter}}"
+          >
+            Address: {{forloop.counter}}
+          </label>
+        </div>
+        {% endfor %}
+        <div class="text-end">
+          <div id="paypal-button-container"></div>
+        </div>
+      </form>
+      {% else %}
+      <a href="{% url 'addaddress' %}" class="btn btn-outline-dark"
+        >Add New Address</a
+      >
+      {% endif %} {% else %}
+      <div class="container">
+        <h3>Cart is Empty</h3>
+        <hr />
+        <img
+          src="{% static 'app/images/emptycart.png' %}"
+          width="100"
+          height="100"
+          alt="Empty"
+        />
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock main-content %} {% block payment-gateway %}
+<script src="https://www.paypal.com/sdk/js?client-id=ASHkLPISOudH3C8BtTdrDg9_C6vq4exTFGzhTw_H-NPgwi0K2uOmcVHVKlJ3ZETX1cfZT9GkwUkKm638&currency=USD&disable-funding=credit"></script>
+<script>
+  var total = "{{totalamount}}";
+  // Render the PayPal button into #paypal-button-container
+  paypal
+    .Buttons({
+      style: {
+        color: "blue",
+        shape: "rect",
+      },
+
+      // Set up the transaction
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: parseFloat(total).toFixed(2),
+              },
+            },
+          ],
+        });
+      },
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          alert(
+            "Transaction completed by " + details.payer.name.given_name + "!"
+          );
+          document.getElementById("myform").submit();
+        });
+      },
+    })
+    .render("#paypal-button-container");
+</script>
+{% endblock payment-gateway %}

@@ -1,0 +1,29 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Login{% endblock title %} 
+{% block main-content %}
+
+<section class="about">
+  <div class="main">
+    <img src="{% static 'app/images/banner/about.png' %}" />
+    <div class="all-text">
+      <h4>About Us</h4>
+      <h1>A house of Creative & Intelligence.</h1>
+      <p>
+        It is an e-commerce website that delivers you your makeup and pet
+        products to your doorstep at your convenience.
+      </p>
+      <div class="buttn">
+        <button
+          type="button"
+          onclick="window.location.href = '{% url 'team' %}' "
+        >
+          Our Team
+        </button>
+        <button type="button" class="buttn2">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock main-content %}

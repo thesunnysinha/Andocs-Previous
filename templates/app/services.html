@@ -1,0 +1,71 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Our Services{% endblock title %} 
+{% block main-content %}
+
+<div class="service">
+  <div class="max-width">
+    <div class="title"><h2>Our Services</h2></div>
+
+    <div class="content1">
+      <div class="car">
+        <div class="box1">
+          <img
+            src="{% static 'app/images/services/cod.png' %}"
+            height="20"
+            width="20"
+            alt=""
+          />
+          <h3>Cash On Delivery</h3>
+          <p>
+            Cash on delivery available. Pay when your order is at your doorstep
+            for your convenience.
+          </p>
+        </div>
+      </div>
+      <div class="car">
+        <div class="box1">
+          <img
+            src="{% static 'app/images/services/home.png' %}"
+            height="20"
+            width="20"
+            alt=""
+          />
+          <h3>Home Delivery</h3>
+          <p>
+            Get your products delivered at your doorstep without any hassle.
+          </p>
+        </div>
+      </div>
+      <div class="car">
+        <div class="box1">
+          <img
+            src="{% static 'app/images/services/card.png' %}"
+            height="20"
+            width="20"
+            alt=""
+          />
+          <h3>Pay with Cards</h3>
+          <p>Order with the ease of paying with debit or credit cards.</p>
+        </div>
+      </div>
+      <div class="car">
+        <div class="box1">
+          <img
+            src="{% static 'app/images/services/help.png' %}"
+            height="20"
+            width="20"
+            alt=""
+          />
+          <h3>24X7 Helpline</h3>
+          <p>
+            Having any doubts or any questions? Get in touch with our 24X7
+            helpline desk
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock main-content %}

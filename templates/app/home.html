@@ -1,0 +1,233 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Home{% endblock title %} 
+{% block banner_slider %}
+<!--Banner Slider-->
+<section id="home" class="home pt-1 pb-3 overflow-hidden">
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="home-banner one">
+          <div class="banner-text">
+            <a
+              href="{% url 'cosmetics' %}"
+              class="btn btn-danger text-uppercase mt-4"
+              >Our Products</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="home-banner two">
+          <div class="banner-text">
+            <a
+              href="{% url 'petproducts' %}"
+              class="btn btn-danger text-uppercase mt-4"
+              >Our Products</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="home-banner three">
+          <div class="banner-text">
+            <a href="#" class="btn btn-danger text-uppercase mt-4">Order Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true">
+        <span class="slider-icon"
+          ><img
+            src="{% static 'app/images/banner/prev-icon.png' %}"
+            class="d-block w-100"
+            alt="..."
+        /></span>
+      </span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true">
+        <span class="slider-icon"
+          ><img
+            src="{% static 'app/images/banner/next-icon.png' %}"
+            class="d-block w-100"
+            alt="..."
+        /></span>
+      </span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+<!-- End Banner Slider -->
+
+{% endblock banner_slider %} {% block livesale %}
+<!-- Live Sale Section -->
+<div class="container">
+  <div class="row bg-danger text-center p-5 text-white border-bottom shadow">
+    <h1>SALE IS LIVE NOW</h1>
+    <span>5% Instant Discount on Axis Bank Credit and Debit Card</span>
+    <small class="fw-lighter"
+      >Terms and Conditions Applied (For details visit Bank's official
+      Website)</small
+    >
+  </div>
+</div>
+<!-- End Live Sale Section -->
+{% endblock livesale %} {% block main-content %}
+<!-- 1st Product Slider -->
+<div class="m-3">
+  <h2>Cosmetics</h2>
+  <!-- Slider 1 -->
+  <div class="owl-carousel" id="slider1">
+    {% for cosmetic in cosmetics%}
+
+    <div class="container">
+      <a href="{% url 'product-detail' cosmetic.id %}" class="btn">
+        <div class="item">
+          <img src="{{cosmetic.product_image.url}}" alt="" height="200px" />
+          <span class="fw-bold">{{cosmetic.title}}</span>
+          <br />
+          <span class="fs-5">
+            Rs. {{cosmetic.discounted_price}}
+            <small class="fw-light text-decoration-line-through"
+              >{{cosmetic.selling_price}}</small
+            >
+            <small style="color: green" class="fw-dark"
+              >{{cosmetic.get_discount_percent|floatformat:0}}% off</small
+            ></span
+          >
+        </div>
+      </a>
+      <div class="col-md-12 text-center">
+        <button
+          data-product="{{cosmetic.id}}"
+          data-action="add"
+          class="btn btn-outline-primary add-btn update-cart"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<!-- End 1st Product Slider -->
+
+<!-- 2nd Product Slider -->
+<div class="mx-3">
+  <h2>Pet Products</h2>
+  <!-- Slider 2 -->
+  <div class="owl-carousel" id="slider2">
+    {% for petproduct in petproducts%}
+    <div class="container">
+      <a href="{% url 'product-detail' petproduct.id %}" class="btn">
+        <div class="item">
+          <img
+            src="{{petproduct.product_image.url}}"
+            alt=""
+            height="200px"
+          /><span class="fw-bold">{{petproduct.title}}</span><br /><span
+            class="fs-5"
+            >Rs. {{petproduct.discounted_price}}
+            <small class="fw-light text-decoration-line-through"
+              >{{petproduct.selling_price}}</small
+            >
+            <small style="color: green" class="fw-dark"
+              >{{petproduct.get_discount_percent|floatformat:0}}% off</small
+            ></span
+          >
+        </div>
+      </a>
+      <div class="col-md-12 text-center">
+        <button
+          data-product="{{petproduct.id}}"
+          data-action="add"
+          class="btn btn-outline-primary add-btn update-cart"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- End 2nd Product Slider -->
+
+  <!-- Product Recommendation Slider-->
+  {% if request.user.is_authenticated %}
+  <div class="mx-3">
+    <h2>Recommendations for {{ username }}</h2>
+    <div class="owl-carousel" id="slider2">
+      {% for product in recommended_list %}
+      <div class="container">
+        <a href="{% url 'product-detail' product.id %}" class="btn">
+          <div class="item">
+            <img
+              src="{{product.product_image.url}}"
+              alt=""
+              height="200px"
+            /><span class="fw-bold">{{product.title}}</span><br /><span
+              class="fs-5"
+              >Rs. {{product.discounted_price}}
+              <small class="fw-light text-decoration-line-through"
+                >{{product.selling_price}}</small
+              >
+              <small style="color: green" class="fw-dark"
+                >{{product.get_discount_percent|floatformat:0}}% off</small
+              ></span
+            >
+          </div>
+        </a>
+        <div class="col-md-12 text-center">
+          <button
+            data-product="{{product.id}}"
+            data-action="add"
+            class="btn btn-outline-primary add-btn update-cart"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!--End of Product Recommendation Slider-->
+    {% endif %} {% endblock main-content %}
+  </div>
+</div>

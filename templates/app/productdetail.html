@@ -1,0 +1,239 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Product Detail{% endblock title %} 
+{% block main-content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-sm-6 text-center align-self-center">
+      <img
+        src="{{product.product_image.url}}"
+        alt=""
+        class="img-fluid img-thumbnail"
+      />
+    </div>
+    <div class="col-sm-5 offset-sm-1">
+      <h2>{{product.title}}</h2>
+      <hr />
+      <div class="product_description">{{product.description}}</div>
+      <br />
+      <h4>
+        Rs. {{product.discounted_price}}
+        <small class="fw-light text-decoration-line-through"
+          >{{product.selling_price}}</small
+        >
+        <small style="color: green" class="fw-dark"
+          >{{discountpercent|floatformat:0}}% off</small
+        >
+      </h4>
+      <br />
+      {% if request.user.is_authenticated %} {% if incart %}
+      <a href="{% url 'cart' %}" class="btn btn-warning shadow px-5 py-2 ms-4"
+        >Go to Cart</a
+      >
+      {% else %}
+      <button
+        data-product="{{product.id}}"
+        data-action="add"
+        class="btn btn-primary add-btn update-cart px-5 py-2 ms-4"
+      >
+        Add to Cart
+      </button>
+      {% endif %} {% if inwishlist %}
+      <a
+        href="{% url 'wishlist' %}"
+        class="btn btn-danger shadow px-5 py-2 ms-4"
+        >Go to Wishlist</a
+      >
+      {% else %}
+      <button
+        data-product="{{product.id}}"
+        data-action="add"
+        class="btn btn-warning add-btn update-wishlist px-5 py-2 ms-4"
+      >
+        Add to Wishlist
+      </button>
+      {% endif %} {% endif %} {% if not request.user.is_authenticated %}
+      <button
+        data-product="{{product.id}}"
+        data-action="add"
+        class="btn btn-primary add-btn update-cart px-5 py-2 ms-4"
+      >
+        Add to Cart
+      </button>
+      <button
+        data-product="{{product.id}}"
+        data-action="add"
+        class="btn btn-warning add-btn update-wishlist px-5 py-2 ms-4"
+      >
+        Add to Wishlist
+      </button>
+      {% endif %}
+      <h5 class="mt-5">Available Offers</h5>
+      <ul>
+        <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>
+        <li>Special Price Get extra ₹3000 off (price inclusive of discount)</li>
+        <li>No cost EMI ₹1,667/month. Standard EMI also available</li>
+        <li>
+          Partner Offer ₹2000 Flipkart Gift Card on Every 1000th Transaction
+          with a new Visa Debit/Credit Card
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="mx-3">
+    <h2>Similar Products</h2>
+    <hr />
+    <div class="owl-carousel" id="slider2">
+      {% for product in related_product %}
+      <div class="container">
+        <a href="{% url 'product-detail' product.id %}" class="btn">
+          <div class="item">
+            <img
+              src="{{product.product_image.url}}"
+              alt=""
+              height="200px"
+            /><span class="fw-bold">{{product.title}}</span><br /><span
+              class="fs-5"
+              >Rs. {{product.discounted_price}}
+              <small class="fw-light text-decoration-line-through"
+                >{{product.selling_price}}</small
+              >
+              <small style="color: green" class="fw-dark"
+                >{{product.get_discount_percent|floatformat:0}}% off</small
+              ></span
+            >
+          </div>
+        </a>
+        <div class="col-md-12 text-center">
+          <button
+            data-product="{{product.id}}"
+            data-action="add"
+            class="btn btn-outline-primary add-btn update-cart"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Product Recommendation Slider-->
+    {% if request.user.is_authenticated %}
+    <div class="mx-3">
+      <h2>Recommendations for {{ request.user }}</h2>
+      <hr />
+      <div class="owl-carousel" id="slider2">
+        {% for product in recommended_list %}
+        <div class="container">
+          <a href="{% url 'product-detail' product.id %}" class="btn">
+            <div class="item">
+              <img
+                src="{{product.product_image.url}}"
+                alt=""
+                height="200px"
+              /><span class="fw-bold">{{product.title}}</span><br /><span
+                class="fs-5"
+                >Rs. {{product.discounted_price}}
+                <small class="fw-light text-decoration-line-through"
+                  >{{product.selling_price}}</small
+                >
+                <small style="color: green" class="fw-dark"
+                  >{{product.get_discount_percent|floatformat:0}}% off</small
+                ></span
+              >
+            </div>
+          </a>
+          <div class="col-md-12 text-center">
+            <button
+              data-product="{{product.id}}"
+              data-action="add"
+              class="btn btn-outline-primary add-btn update-cart"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!--End of Product Recommendation Slider-->
+      {% endif %}
+    </div>
+    <br />
+    <div class="container">
+      <h2>Reviews</h2>
+      <hr />
+    </div>
+    <section class="log">
+      <div class="container my-4">
+        <div class="row">
+          <div class="col-sm-6 text-center align-self-center">
+            <div class="container my-5">
+              <div class="row">
+                <div class="col-sm-9 offset-sm-1">
+                  {% if comment%} {% for com in comment %}
+                  <div class="row shadow-sm mb-3">
+                    <div class="col-sm-4">
+                      <p>{{com.user_name}}</p>
+                      <p>{{com.create_at}}</p>
+                    </div>
+                    <div class="col-sm-7">
+                      <p>Comment: {{com.comment}}</p>
+                      <p>Rating: {{com.rating}}</p>
+                    </div>
+                  </div>
+                  {% endfor %} {% else %}
+                  <h1>No Comments Yet :(</h1>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="contentBx">
+            <div class="formBx">
+              <h2>Write Your Reviews</h2>
+              <p>Your email address will not be publised.</p>
+              <form
+                method="POST"
+                action="/product-detail/addcomment/{{product.id}}"
+                novalidate
+                class="signBx"
+              >
+                <div class="inputBx">
+                  {% if messages %} {% for message in messages %}
+                  <p
+                    {%
+                    if
+                    message.tags
+                    %}
+                    class="alert alert-{{message.tags}} mb-5"
+                    {%
+                    endif
+                    %}
+                  >
+                    {{message}}
+                  </p>
+                  {% endfor %} {% endif %} {% csrf_token %} {% for fm in form %}
+                  <div class="form-group mb-3">
+                    {{fm.label_tag}} {{fm}}
+                    <small class="text-danger">{{fm.errors|striptags}}</small>
+                  </div>
+                  {% endfor %} {% if request.user.is_authenticated %}
+                  <input
+                    type="submit"
+                    value="Add Review"
+                    class="btn btn-primary"
+                  />
+                  {% else %}
+                  <h4>You must be logged in to post a review.</h4>
+                  {% endif %}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endblock main-content %}
+  </div>
+</div>

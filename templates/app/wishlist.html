@@ -1,0 +1,39 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Wishlist{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+     {% if wishlists%}
+  <h1 class="text-center mb-5">Shopping Wishlist</h1>
+  <div class="col-sm-8">
+  <div class="card">
+   <div class="card-body">
+    <h3>Wishlist</h3>
+    {% for cart in wishlists %}
+    <hr>
+    <div class="row">
+     <div class="col-sm-3 text-center align-self-center"><a href="{% url 'product-detail' cart.product.id %}"><img src="{{cart.product.product_image.url}}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"></a> </div>
+     <div class="col-sm-9">
+      <div>
+       <p><h5>{{cart.product.title}}</h5></p>
+       <p class="mb-2 text-muted small">{{cart.product.description}}</p>
+       <div class="d-flex justify-content-between">
+           <button data-product="{{cart.product.id}}" data-action="add" class="btn btn-primary add-btn update-cart px-3 py-2 ms-3">Add to Cart</button>
+            <button data-product="{{cart.product.id}}" data-action="delete" class="btn btn-danger add-btn update-wishlist px-3 py-2 ms-3">Remove Item</button>
+            
+            <p class="mb-0"><span><strong>Rs. {{cart.product.discounted_price}} <small class="fw-light text-decoration-line-through">{{cart.product.selling_price}}</small>  <small style="color: green;" class="fw-dark">{{cart.get_discount_percent|floatformat:0}}% off</small></strong></span></p>
+       </div>
+      </div>
+     </div>
+    </div>
+    {% endfor %}
+   </div>
+   </div>
+  </div>
+ </div>
+</div>
+{% else %}
+    <h1>Wishlist is Empty.</h1>
+{% endif %}
+{% endblock main-content %}

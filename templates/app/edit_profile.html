@@ -1,0 +1,60 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Edit Profile{% endblock title %} 
+{% block main-content %}
+
+<section class="log">
+  <div class="imgBx">
+    <img src="{% static 'app/images/login.png' %}" />
+  </div>
+  <div class="contentBx">
+    <div class="formBx">
+      <h2>Edit Profile</h2>
+      <form method="POST" novalidate class="signBx">
+        <div class="inputBx">
+          {% if messages %} {% for message in messages %}
+          <p
+            {%
+            if
+            message.tags
+            %}
+            class="alert alert-{{message.tags}} mb-5"
+            {%
+            endif
+            %}
+          >
+            {{message}}
+          </p>
+          {% endfor %} 
+          {% endif %} 
+          {% csrf_token %}
+          <div class="form-group mb-3">
+            <img
+            class="gender_center"
+            src="{{request.user.profile.profile_pic.url}}"
+            alt="Profile Pic"
+            />
+            {{p_form.profile_pic.label_tag}} {{p_form.profile_pic}}
+            
+            <small class="text-danger">{{fm.errors|striptags}}</small>
+          </div> 
+          {% for fm in form %}
+          <div class="form-group mb-3">
+            {{fm.label_tag}} {{fm}}
+            <small class="text-danger">{{fm.errors|striptags}}</small>
+          </div>
+          {% endfor %}
+          <div class="form-group mb-3">
+            {{p_form.phone_num.label_tag}} {{p_form.phone_num}}
+            {{p_form.gender.label_tag}} {{p_form.gender}}
+            {{p_form.birth_date.label_tag}} {{p_form.birth_date}}
+            <small class="text-danger">{{fm.errors|striptags}}</small>
+          </div>
+          <input type="submit" value="Update Profile" class="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock main-content %}

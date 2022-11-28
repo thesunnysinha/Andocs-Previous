@@ -1,0 +1,232 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  
+  <!-- jQuery !-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+  <!-- jQuery UI !-->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!--Owl Carousel CSS-->
+  <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}">
+
+  <!--FontAwesome CSS-->
+  <link rel="stylesheet" href="{% static 'app/css/all.min.css' %}">
+  <!--Custom CSS-->
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/team.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/about.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/services.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/contactus.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'app/js/ajax.js' %}"></script>
+
+  <script >
+    var user = '{{request.user}}'
+    function getToken(name){
+      var cookieValue = null;
+      if(document.cookie && document.cookie !==''){
+        var cookies = document.cookie.split(',');
+        for (var i = 0;i<cookies.length;i++){
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0,name.length +1)==(name+'='))
+          {
+            cookieValue= decodeURIComponent(cookie.substring(name.length+1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    var csrftoken = getToken('csrftoken');
+
+
+    $(document).ready(function(){
+      $('.btn').click(function(){
+        $('.items').toggleClass("show");
+        $('ul li').toggleClass("hide");
+      });
+    });
+  </script>
+
+  <title>Andocs | {% block title %} {% endblock title %} </title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ddd">
+      <div class="container">
+        <a class="navbar-brand" id="And" href="/">Andocs</a>
+          <form action="/search" method="GET" >
+            <input type="search"   id="searchbox" placeholder="Search here" name="query"  required>
+            <button id="searchicon" type="submit">Search</button>
+          </form> 
+        <div class="rightnav">
+        <button class="navbar-toggler" id="togglebox" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navrit" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown mx-2">
+                  <a class="nav-link dropdown-toggle text-black" href="#" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Cosmetics
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'cosmetics' %}">All Cosmetics</a>
+                    <hr>
+                    <li><a class="dropdown-item" href="{% url 'cosmeticsdata' 'Face_Wash' %}">Face Wash</a></li>
+                    <li><a class="dropdown-item" href="#">Others</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                <li class="nav-item dropdown mx-2">
+                  <a class="nav-link dropdown-toggle text-black" href="#" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Pet Products
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="{% url 'petproducts' %}">All Pet Products</a></li>
+                    <hr>
+                    <li><a class="dropdown-item" href="{% url 'petproductsdata' 'Pet_Utensils' %}">Pet Utensils</a></li>
+                    <li><a class="dropdown-item" href="#">Others</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="new-item">
+              <div>
+                <ul class="nav navbar-nav navbar-right me-auto mb-2 mb-lg-0 navright">
+                  {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown mx-2">
+                      <a class="nav-link dropdown-toggle text-black" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'app/images/fac.png' %}" height="20" width="20" alt="">
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><p class="dropdown-item">Hello, {{request.user.first_name|capfirst}}</p></li><hr>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
+                        <li><a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a></li>
+                        <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Change Password</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                      </ul>
+                    </li>
+                    {% comment %} <li class="btn"><a href="#"><i class="fas fa-bars"></i></a></li> {% endcomment %}
+                    <ul class="ml-auto">
+                    <li class="nav-item mx-2">
+                      <a href="{% url 'cart' %}" class="nav-link text-black"><img src="{% static 'app/images/cart.png' %}" height="25" width="25" alt="Cart"> <span class="badge bg-danger">{{cartItems}}</span> </a>
+                    </li>
+                  {% else %}
+                    <li class="nav-item mx-2 ">
+                      <a href="{% url 'login' %}" class="nav-link text-black">Login</a>
+                    </li>
+                    <li class="nav-item mx-2 ">
+                      <a href="{% url 'signup' %}" class="nav-link text-black">Sign Up</a>
+                    </li></ul>
+                  {% endif %}
+                  </div>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      </div> 
+
+      
+    </nav>
+    {% block banner_slider %} {% endblock banner_slider %}
+    {% block livesale %} {% endblock livesale %}
+    {% block main-content %} {% endblock main-content %}
+    {% block payment-gateway %} {% endblock payment-gateway %}
+
+
+
+    <!-- Start Footer -->
+    <br>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col">
+            <h4>Andocs</h4>
+            <ul>
+              <li><a href="{% url 'aboutus' %}">About Us</a></li>
+              <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+              <li><a href="{% url 'services' %}">Our Services</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>get help</h4>
+            <ul>
+              <li><a href="{% url 'helpdesk' %}">Helpdesk</a></li>
+              <li><a href="#">FAQ</a></li>
+              {% if request.user.is_authenticated %}
+                <li><a href="{% url 'orders' %}">order status</a></li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>products</h4>
+            <ul>
+              <li><a href="{% url 'cosmetics' %}">Cosmetics</a></li>
+              <li><a href="{% url 'petproducts' %}">Pet Products</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>follow us</h4>
+            <div class="l-footer">
+              <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/andocs_india/"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+   </footer>
+   <p style="text-align: center;">All rights reserved by ©Andocs 2022 </p>
+  <!-- End Footer -->
+   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+      $( function() {
+          var availableTags = [
+              {% for data in product_data %}
+                  "{{data.title}}",
+              {% endfor %}
+          ];
+        $( "#searchbox" ).autocomplete({
+          source: availableTags
+        });
+      });
+    </script>
+    <!-- Jquery -->
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="{% static 'app/js/cart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/wishlist.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/address.js' %}"></script>
+    <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'app/js/all.min.js' %}"></script>
+    <script src="{% static 'app/js/myscript.js' %}"></script>
+  </body>
+</html>
