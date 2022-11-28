@@ -1,0 +1,95 @@
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+.contactus{
+    position: relative;
+    width: 100%;
+    padding: 40px 100px;
+}
+.contactus .title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+   
+}
+.contactus h2{
+    border-bottom: 4px solid #ff4584;
+}
+.box{
+    width:800px;
+    height:500px;
+    padding-top:20px;
+    padding-left:15px;
+    padding-right:15px;
+}
+#st-box {
+    float:left;
+    width:350px;
+    height:450px;
+    background-color:white;
+}
+
+#rd-box {
+    float:right;
+    width:350px;
+    height:450px;
+    background-color:white;
+    padding: 15px;
+}
+
+#rd-box{
+    background: #0e3950;
+}
+#rd-box h3{
+    color: #fff;
+    padding: 20px;
+}
+#rd-box .infobox div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+#rd-box .infobox div span{
+    min-width: 40px;
+    height: 40px;
+    color: #fff;
+    background: #18b7ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+#rd-box .infobox div p{
+    color: #fff;
+}
+#rd-box .infobox div a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+.social{
+    margin-top: 40px;
+    display: flex;
+}
+.social li{
+    list-style: none;
+    margin-right: 15px;
+}
+.social li a{
+    color: #fff;
+    font-size: 2em;
+    color: #ccc;
+}
+.social li a:hover{
+    color: #fff;
+}
+@media (max-width:991px){
+    .contactus{
+        padding: 20px;
+    }
+}
